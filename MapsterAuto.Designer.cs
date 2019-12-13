@@ -1,6 +1,6 @@
 ﻿namespace MapsterAutoField
 {
-    partial class Form1
+    partial class MapsterAuto
     {
         /// <summary>
         /// 必需的设计器变量。
