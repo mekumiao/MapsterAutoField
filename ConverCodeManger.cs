@@ -10,18 +10,13 @@ namespace MapsterAutoField
     public class ConverCodeManger
     {
 
-        public string SourceCode { get; private set; }
+        public string SourceCode { get; set; }
         protected const string temp1 = "\n\t\t\t\t.Map(dest => dest.{0}, src => src.{1})";
         protected const string temp2 = "\n\t\t\t\t.Map(dest => dest.{0}, src => {1})";
         protected const string temp3 = "Config.ForType<{0}, {1}>()";
         protected const string temp4 = "\n\t\t\t\t.IgnoreNonMapped(true);";
 
         protected const string nowtime = "T";
-
-        public ConverCodeManger(string code)
-        {
-            this.SourceCode = code;
-        }
 
         /// <summary>
         /// 生成代码

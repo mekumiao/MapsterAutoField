@@ -29,11 +29,14 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.richTextCode = new System.Windows.Forms.RichTextBox();
-            this.richTextStr = new System.Windows.Forms.RichTextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.label1 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.richTextStr = new System.Windows.Forms.RichTextBox();
+            this.richTextCode = new System.Windows.Forms.RichTextBox();
+            this.btnImport = new System.Windows.Forms.Button();
+            this.txtModelPath = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -61,35 +64,6 @@
             this.splitContainer1.SplitterDistance = 591;
             this.splitContainer1.TabIndex = 3;
             // 
-            // richTextCode
-            // 
-            this.richTextCode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextCode.Location = new System.Drawing.Point(0, 0);
-            this.richTextCode.Name = "richTextCode";
-            this.richTextCode.Size = new System.Drawing.Size(723, 723);
-            this.richTextCode.TabIndex = 11;
-            this.richTextCode.Text = "";
-            // 
-            // richTextStr
-            // 
-            this.richTextStr.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextStr.Location = new System.Drawing.Point(0, 0);
-            this.richTextStr.Name = "richTextStr";
-            this.richTextStr.Size = new System.Drawing.Size(591, 487);
-            this.richTextStr.TabIndex = 0;
-            this.richTextStr.Text = "[product_pt,crej_cj]\n\ncj_cmteid,pt_cmteid\ncj_ddtame,T\ncj_mqty,12\nflag,false\nremar" +
-    "k,\"hahahaha\"";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(510, 201);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(78, 28);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "生成代码";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -99,6 +73,9 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.label2);
+            this.splitContainer2.Panel1.Controls.Add(this.txtModelPath);
+            this.splitContainer2.Panel1.Controls.Add(this.btnImport);
             this.splitContainer2.Panel1.Controls.Add(this.label1);
             this.splitContainer2.Panel1.Controls.Add(this.button1);
             // 
@@ -119,13 +96,69 @@
     "]\r\n\r\ncj_cmteid,pt_cmteid\r\ncj_ddtame,T\r\ncj_mqty,12\r\nflag,false\r\nremark,\"hahahaha\"" +
     "";
             // 
-            // Form1
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(510, 201);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(78, 28);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "生成代码";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // richTextStr
+            // 
+            this.richTextStr.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextStr.Location = new System.Drawing.Point(0, 0);
+            this.richTextStr.Name = "richTextStr";
+            this.richTextStr.Size = new System.Drawing.Size(591, 487);
+            this.richTextStr.TabIndex = 0;
+            this.richTextStr.Text = "[product_pt,crej_cj]\n\ncj_cmteid,pt_cmteid\ncj_ddtame,T\ncj_mqty,12\nflag,false\nremar" +
+    "k,\"hahahaha\"";
+            // 
+            // richTextCode
+            // 
+            this.richTextCode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextCode.Location = new System.Drawing.Point(0, 0);
+            this.richTextCode.Name = "richTextCode";
+            this.richTextCode.Size = new System.Drawing.Size(723, 723);
+            this.richTextCode.TabIndex = 11;
+            this.richTextCode.Text = "";
+            // 
+            // btnImport
+            // 
+            this.btnImport.Location = new System.Drawing.Point(336, 53);
+            this.btnImport.Name = "btnImport";
+            this.btnImport.Size = new System.Drawing.Size(75, 23);
+            this.btnImport.TabIndex = 3;
+            this.btnImport.Text = "导入实体";
+            this.btnImport.UseVisualStyleBackColor = true;
+            this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
+            // 
+            // txtModelPath
+            // 
+            this.txtModelPath.Location = new System.Drawing.Point(336, 26);
+            this.txtModelPath.Name = "txtModelPath";
+            this.txtModelPath.Size = new System.Drawing.Size(232, 21);
+            this.txtModelPath.TabIndex = 4;
+            this.txtModelPath.Text = "C:\\Users\\Administrator\\Desktop\\项目源码\\ZxSoftERP_SC\\ZxModel\\Model.Basic\\";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(260, 29);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(65, 12);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "实体文件夹";
+            // 
+            // MapsterAuto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1318, 723);
             this.Controls.Add(this.splitContainer1);
-            this.Name = "Form1";
+            this.Name = "MapsterAuto";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "对象映射器-配置生成";
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -133,6 +166,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
@@ -147,6 +181,9 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnImport;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtModelPath;
     }
 }
 

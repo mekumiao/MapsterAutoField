@@ -13,9 +13,12 @@ namespace MapsterAutoField
 {
     public partial class MapsterAuto : Form
     {
+        private ConverCodeManger manger { get; set; }
+
         public MapsterAuto()
         {
             InitializeComponent();
+            manger = new ConverCodeManger();
         }
 
         /// <summary>
@@ -25,13 +28,32 @@ namespace MapsterAutoField
         /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-            ConverCodeManger manger = new ConverCodeManger(this.richTextStr.Text);
-
+            manger.SourceCode = this.richTextStr.Text;
             var code = manger.ConvertCode();
             if (!string.IsNullOrWhiteSpace(code))
             {
                 this.richTextCode.Clear();
                 this.richTextCode.AppendText(code);
+            }
+        }
+
+        private void btnImport_Click(object sender, EventArgs e)
+        {
+            manger.SourceCode = this.richTextStr.Text;
+            var names = manger.GetModelNames();
+            var path = this.txtModelPath.Text;
+            var mp = new ModelImport();
+            var dict = mp.Test(path, names[1], names[0]);
+
+            if (dict.Count > 0)
+            {
+                this.richTextCode.Clear();
+                foreach (var item in dict)
+                {
+                    var t = item.Item2.Max(x => x.Item2);
+                    
+                    this.richTextStr.AppendText(string.Format("\n{0},\t\t\t{1}", item.Item1, 0M));
+                }
             }
         }
     }

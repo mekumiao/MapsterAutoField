@@ -47,12 +47,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConverCodeManger.cs" />
+    <Compile Include="LevenshteinDistance.cs" />
     <Compile Include="MapsterAuto.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MapsterAuto.Designer.cs">
       <DependentUpon>MapsterAuto.cs</DependentUpon>
     </Compile>
+    <Compile Include="ModelImport.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MapsterAuto.resx">
