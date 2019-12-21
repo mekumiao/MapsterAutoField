@@ -50,9 +50,7 @@ namespace MapsterAutoField
                 this.richTextCode.Clear();
                 foreach (var item in dict)
                 {
-                    var t = item.Item2.Max(x => x.Item2);
-                    
-                    this.richTextStr.AppendText(string.Format("\n{0},\t\t\t{1}", item.Item1, 0M));
+                    this.richTextStr.AppendText(string.Format("\n{0},\t\t\t{1}", item.Key, item.Value));
                 }
             }
         }
