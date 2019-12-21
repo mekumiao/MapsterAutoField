@@ -113,8 +113,8 @@
             this.richTextStr.Name = "richTextStr";
             this.richTextStr.Size = new System.Drawing.Size(591, 487);
             this.richTextStr.TabIndex = 0;
-            this.richTextStr.Text = "[product_pt,crej_cj]\n\ncj_cmteid,pt_cmteid\ncj_ddtame,T\ncj_mqty,12\nflag,false\nremar" +
-    "k,\"hahahaha\"";
+            this.richTextStr.Text = "[product_pt,stockc_skc]\n\ncj_cmteid,pt_cmteid\ncj_ddtame,T\ncj_mqty,12\nflag,false\nre" +
+    "mark,\"hahahaha\"";
             // 
             // richTextCode
             // 
