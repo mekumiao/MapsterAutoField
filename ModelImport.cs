@@ -23,8 +23,40 @@ namespace MapsterAutoField
 
         }
 
+        public Tuple<List<FieldInfo>, List<FieldInfo>> GetFields(string dir, string modelSrc, string modelDes)
+        {
+            var srcPath = Path.Combine(dir, string.Format("{0}.cs", modelSrc));
+            var desPath = Path.Combine(dir, string.Format("{0}.cs", modelDes));
 
-        public Dictionary<string, string> Test(string basePath, string modelSrc, string modelDes)
+            var srcText = ReadFile(srcPath);
+            var desText = ReadFile(desPath);
+
+            var srcField = LoadFields(srcText);
+            var desField = LoadFields(desText);
+            var srcDest = LoadDest(srcText);
+            var desDest = LoadDest(desText);
+
+            var list1 = new List<FieldInfo>();
+            var list2 = new List<FieldInfo>();
+
+            var src = (from f in srcField join d in srcDest on 1 equals 1 select new FieldInfo() { Field = f, Dest = d }).ToList();
+
+
+            srcField.ForEach(x => list1.Add(new FieldInfo() { Field = x }));
+
+            //list1.ForEach(x=>x.Dest = )
+            var result = new Tuple<List<FieldInfo>, List<FieldInfo>>(list1, list2);
+            return result;
+        }
+
+        /// <summary>
+        /// 执行匹配
+        /// </summary>
+        /// <param name="basePath"></param>
+        /// <param name="modelSrc"></param>
+        /// <param name="modelDes"></param>
+        /// <returns></returns>
+        public Dictionary<string, string> Build(string basePath, string modelSrc, string modelDes)
         {
             var srcPath = Path.Combine(basePath, string.Format("{0}.cs", modelSrc));
             var desPath = Path.Combine(basePath, string.Format("{0}.cs", modelDes));
@@ -32,41 +64,17 @@ namespace MapsterAutoField
             var srcText = ReadFile(srcPath);
             var desText = ReadFile(desPath);
 
-            var info = new List<FieldInfo>();
-
             var srcField = LoadFields(srcText);
             var desField = LoadFields(desText);
             var srcDest = LoadDest(srcText);
             var desDest = LoadDest(desText);
 
-            desField.ForEach(x =>
-            {
-                var fd = new FieldInfo()
-                {
-                    desField = x,
-                    srcField = 
-                };
-
-                info.Add(fd);
-            });
-
             return this.Tactics(srcField, desField, srcDest, desDest);
+
         }
 
-        private string ReadFile(string path)
-        {
-            using (StreamReader reader = new StreamReader(path, Encoding.Default))
-            {
-                return reader.ReadToEnd();
-            }
-        }
-
-        /// <summary>
-        /// 提取字段
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        private List<string> LoadFields(string model)
+        //提取字段
+        List<string> LoadFields(string model)
         {
             var match = Regex.Matches(model, @"public(\s+\w+){2}\s*{\s*get\s*;\s*set\s*;\s*}");
             var result = new List<string>();
@@ -77,24 +85,27 @@ namespace MapsterAutoField
             }
             return result;
         }
-
-        /// <summary>
-        /// 提取描述
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        private List<string> LoadDest(string model)
+        //提取描述
+        List<string> LoadDest(string model)
         {
-            var match = Regex.Matches(model, "Description\\(\"[\u4E00-\u9FA5\\s\\(\\)]+\"\\)");
+            var match = Regex.Matches(model, "Description\\(\"[\\w\u4E00-\u9FA5\\s\\(\\)]+\"\\)");
             var result = new List<string>();
             foreach (Match item in match)
             {
-                var value = Regex.Match(item.Value, "(?<=Description\\(\")([\u4E00-\u9FA5\\s\\(\\)]+)(?=\"\\))").Value;
+                var value = Regex.Match(item.Value, "(?<=Description\\(\")([\\w\u4E00-\u9FA5\\s\\(\\)]+)(?=\"\\))").Value;
                 result.Add(value.Trim());
             }
             return result;
         }
 
+        //文件读取
+        string ReadFile(string path)
+        {
+            using (StreamReader reader = new StreamReader(path, Encoding.Default))
+            {
+                return reader.ReadToEnd();
+            }
+        }
 
         /// <summary>
         /// 匹配策略
