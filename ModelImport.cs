@@ -40,7 +40,7 @@ namespace MapsterAutoField
             var list2 = new List<FieldInfo>();
 
             var src = (from f in srcField join d in srcDest on 1 equals 1 select new FieldInfo() { Field = f, Dest = d }).ToList();
-
+            
 
             srcField.ForEach(x => list1.Add(new FieldInfo() { Field = x }));
 

@@ -48,16 +48,17 @@ namespace MapsterAutoField
             var names = manger.GetModelNames();
             var dir = this.txtModelPath.Text;
             var mp = new ModelImport();
-            var dict = mp.Build(dir, names[1], names[0]);
+            //var dict = mp.Build(dir, names[1], names[0]);
+            var field = mp.GetFields(dir, names[1], names[0]);
 
-            if (dict.Count > 0)
-            {
-                this.richTextCode.Clear();
-                foreach (var item in dict)
-                {
-                    this.richTextStr.AppendText(string.Format("\n{0},\t\t\t{1}", item.Key, item.Value));
-                }
-            }
+            //if (dict.Count > 0)
+            //{
+            //    this.richTextCode.Clear();
+            //    foreach (var item in dict)
+            //    {
+            //        this.richTextStr.AppendText(string.Format("\n{0},\t\t\t{1}", item.Key, item.Value));
+            //    }
+            //}
         }
 
         private void listView2_ItemDrag(object sender, ItemDragEventArgs e)
