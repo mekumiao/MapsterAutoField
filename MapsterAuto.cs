@@ -28,12 +28,19 @@ namespace MapsterAutoField
         /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-            manger.SourceCode = this.richTextStr.Text;
-            var code = manger.ConvertCode();
-            if (!string.IsNullOrWhiteSpace(code))
+            try
             {
-                this.richTextCode.Clear();
-                this.richTextCode.AppendText(code);
+                manger.SourceCode = this.richTextStr.Text;
+                var code = manger.ConvertCode();
+                if (!string.IsNullOrWhiteSpace(code))
+                {
+                    this.richTextCode.Clear();
+                    this.richTextCode.AppendText(code);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -44,21 +51,46 @@ namespace MapsterAutoField
         /// <param name="e"></param>
         private void btnImport_Click(object sender, EventArgs e)
         {
-            manger.SourceCode = this.richTextStr.Text;
-            var names = manger.GetModelNames();
-            var dir = this.txtModelPath.Text;
-            var mp = new ModelImport();
-            //var dict = mp.Build(dir, names[1], names[0]);
-            var field = mp.GetFields(dir, names[1], names[0]);
+            try
+            {
+                manger.SourceCode = this.richTextStr.Text;
+                var names = manger.GetModelNames();
+                if (names.Length != 2) throw new Exception("实体名称格式错误");
 
-            //if (dict.Count > 0)
-            //{
-            //    this.richTextCode.Clear();
-            //    foreach (var item in dict)
-            //    {
-            //        this.richTextStr.AppendText(string.Format("\n{0},\t\t\t{1}", item.Key, item.Value));
-            //    }
-            //}
+                listView1.Tag = names;
+                var dir = this.txtModelPath.Text;
+                var mp = new ModelImport();
+                var field = mp.GetFields(dir, names[1], names[0]);
+
+                if (field.Item1.Count > 0)
+                {
+                    listView1.Items.Clear();
+                    field.Item1.ForEach(x =>
+                    {
+                        var listitem = new ListViewItem();
+                        listitem.Text = x.Field;
+                        listitem.SubItems.Add(x.Dest);
+                        listitem.SubItems.Add("");
+                        listitem.SubItems.Add("");
+                        listView1.Items.Add(listitem);
+                    });
+                }
+                if (field.Item2.Count > 0)
+                {
+                    listView2.Items.Clear();
+                    field.Item2.ForEach(x =>
+                    {
+                        var listitem = new ListViewItem();
+                        listitem.Text = x.Field;
+                        listitem.SubItems.Add(x.Dest);
+                        listView2.Items.Add(listitem);
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void listView2_ItemDrag(object sender, ItemDragEventArgs e)
@@ -73,18 +105,32 @@ namespace MapsterAutoField
                 if (e.Data.GetDataPresent(typeof(ListView.SelectedListViewItemCollection).ToString(), false))
                 {
                     var listview = (ListView)sender;
+                    var lstViewColl = (ListView.SelectedListViewItemCollection)e.Data.GetData(typeof(ListView.SelectedListViewItemCollection));
+                    if (lstViewColl.Count <= 0 || lstViewColl[0].ListView.Name == "listView1") return;
                     var cp = listView1.PointToClient(new Point(e.X, e.Y));
                     var listItem = listView1.GetItemAt(cp.X, cp.Y);
                     if (listItem == null) return;
-                    var lstViewColl = (ListView.SelectedListViewItemCollection)e.Data.GetData(typeof(ListView.SelectedListViewItemCollection));
-                    ListViewItem.ListViewSubItemCollection subitem;
-                    foreach (ListViewItem item in lstViewColl)
+
+                    var subitem = new ListViewItem.ListViewSubItemCollection(listItem);
+                    var item = lstViewColl[0];
+                    if (string.IsNullOrWhiteSpace(subitem[2].Text))
                     {
-                        subitem = new ListViewItem.ListViewSubItemCollection(listItem);
                         subitem[2].Text = item.SubItems[0].Text;
                         subitem[3].Text = item.SubItems[1].Text;
                         item.Remove();
                     }
+                    else
+                    {
+                        var listitem = new ListViewItem();
+                        listitem.Text = subitem[2].Text;
+                        listitem.SubItems.Add(subitem[3].Text);
+
+                        listView2.Items.Add(listitem);
+                        subitem[2].Text = item.SubItems[0].Text;
+                        subitem[3].Text = item.SubItems[1].Text;
+                        item.Remove();
+                    }
+
                 }
             }
             finally
@@ -102,14 +148,96 @@ namespace MapsterAutoField
         {
             if (e.KeyCode != Keys.Delete) return;
             if (this.listView1.SelectedItems.Count <= 0) return;
-
             var item = this.listView1.SelectedItems[0];
-            var listitem = new ListViewItem();
-            listitem.Text = item.SubItems[2].Text;
-            listitem.SubItems.Add(item.SubItems[3].Text);
-            this.listView2.Items.Add(listitem);
-            item.SubItems[2].Text = "";
-            item.SubItems[3].Text = "";
+            if (!string.IsNullOrWhiteSpace(item.SubItems[2].Text))
+            {
+                var listitem = new ListViewItem();
+                listitem.Text = item.SubItems[2].Text;
+                listitem.SubItems.Add(item.SubItems[3].Text);
+                this.listView2.Items.Add(listitem);
+            }
+            item.Remove();
+        }
+
+        private void 生成脚本ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.richTextStr.Text = CreateScript();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private string CreateScript()
+        {
+            var names = listView1.Tag as string[];
+            if (names == null || names.Length != 2) throw new Exception("请导入实体后，再自行操作");
+            var builder = new StringBuilder();
+            builder.AppendFormat("[{0},{1}]\n", names[0], names[1]);
+            builder.AppendLine();
+            foreach (ListViewItem item in listView1.Items)
+            {
+                builder.AppendFormat("{0},{1}\n", item.Text, item.SubItems[2].Text);
+            }
+            return builder.ToString();
+        }
+
+        private void 生成代码ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                manger.SourceCode = CreateScript();
+                var code = manger.ConvertCode();
+                if (!string.IsNullOrWhiteSpace(code))
+                {
+                    this.richTextCode.Clear();
+                    this.richTextCode.AppendText(code);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void listView2_DragDrop(object sender, DragEventArgs e)
+        {
+            try
+            {
+                if (e.Data.GetDataPresent(typeof(ListView.SelectedListViewItemCollection).ToString(), false))
+                {
+                    var lstViewColl = (ListView.SelectedListViewItemCollection)e.Data.GetData(typeof(ListView.SelectedListViewItemCollection));
+                    if (lstViewColl.Count <= 0 || lstViewColl[0].ListView.Name == "listView2") return;
+
+                    var item = lstViewColl[0];
+                    if (!string.IsNullOrWhiteSpace(item.SubItems[2].Text))
+                    {
+                        var listitem = new ListViewItem();
+                        listitem.Text = item.SubItems[2].Text;
+                        listitem.SubItems.Add(item.SubItems[3].Text);
+                        this.listView2.Items.Add(listitem);
+                        item.SubItems[2].Text = "";
+                        item.SubItems[3].Text = "";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void listView2_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Move;
+        }
+
+        private void listView1_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            listView1.DoDragDrop(listView1.SelectedItems, DragDropEffects.Move);
         }
     }
 }

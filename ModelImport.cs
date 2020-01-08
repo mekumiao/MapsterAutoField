@@ -39,15 +39,19 @@ namespace MapsterAutoField
             var list1 = new List<FieldInfo>();
             var list2 = new List<FieldInfo>();
 
-            var src = (from f in srcField join d in srcDest on 1 equals 1 select new FieldInfo() { Field = f, Dest = d }).ToList();
-            
 
             srcField.ForEach(x => list1.Add(new FieldInfo() { Field = x }));
+            srcDest.ForEach((x, i) => list1[i].Dest = x);
 
-            //list1.ForEach(x=>x.Dest = )
+            desField.ForEach(x => list2.Add(new FieldInfo() { Field = x }));
+            desDest.ForEach((x, i) => list2[i].Dest = x);
+
             var result = new Tuple<List<FieldInfo>, List<FieldInfo>>(list1, list2);
+
             return result;
         }
+
+
 
         /// <summary>
         /// 执行匹配
@@ -76,7 +80,7 @@ namespace MapsterAutoField
         //提取字段
         List<string> LoadFields(string model)
         {
-            var match = Regex.Matches(model, @"public(\s+\w+){2}\s*{\s*get\s*;\s*set\s*;\s*}");
+            var match = Regex.Matches(model, @"public(\s+[\w<>\[\]]+){2}\s*{\s*get\s*;\s*set\s*;\s*}");
             var result = new List<string>();
             foreach (Match item in match)
             {

@@ -25,6 +25,7 @@ namespace MapsterAutoField
         public string ConvertCode()
         {
             var tabName = this.GetModelNames();
+            if (tabName.Length != 2) throw new Exception("实体名称格式错误");
             var srcName = tabName[0];
             var destName = tabName[1];
 

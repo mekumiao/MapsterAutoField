@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
             "name",
             "名称",
@@ -41,7 +42,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtModelPath = new System.Windows.Forms.TextBox();
             this.btnImport = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.richTextStr = new System.Windows.Forms.RichTextBox();
@@ -55,7 +55,9 @@
             this.field = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.dest = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.richTextCode = new System.Windows.Forms.RichTextBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.生成脚本ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.生成代码ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -72,6 +74,7 @@
             this.splitContainer4.Panel1.SuspendLayout();
             this.splitContainer4.Panel2.SuspendLayout();
             this.splitContainer4.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -103,21 +106,19 @@
             this.splitContainer2.Panel1.Controls.Add(this.label2);
             this.splitContainer2.Panel1.Controls.Add(this.txtModelPath);
             this.splitContainer2.Panel1.Controls.Add(this.btnImport);
-            this.splitContainer2.Panel1.Controls.Add(this.label1);
-            this.splitContainer2.Panel1.Controls.Add(this.button2);
             this.splitContainer2.Panel1.Controls.Add(this.button1);
             // 
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer3);
             this.splitContainer2.Size = new System.Drawing.Size(890, 723);
-            this.splitContainer2.SplitterDistance = 232;
+            this.splitContainer2.SplitterDistance = 70;
             this.splitContainer2.TabIndex = 2;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(260, 29);
+            this.label2.Location = new System.Drawing.Point(8, 6);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(65, 12);
             this.label2.TabIndex = 5;
@@ -125,39 +126,29 @@
             // 
             // txtModelPath
             // 
-            this.txtModelPath.Location = new System.Drawing.Point(336, 26);
+            this.txtModelPath.Location = new System.Drawing.Point(84, 3);
             this.txtModelPath.Name = "txtModelPath";
-            this.txtModelPath.Size = new System.Drawing.Size(232, 21);
+            this.txtModelPath.Size = new System.Drawing.Size(454, 21);
             this.txtModelPath.TabIndex = 4;
             this.txtModelPath.Text = "C:\\Users\\Administrator\\Desktop\\项目源码\\ZxSoftERP_SC\\ZxModel\\Model.Basic\\";
             // 
             // btnImport
             // 
-            this.btnImport.Location = new System.Drawing.Point(336, 53);
+            this.btnImport.Location = new System.Drawing.Point(281, 39);
             this.btnImport.Name = "btnImport";
-            this.btnImport.Size = new System.Drawing.Size(75, 23);
+            this.btnImport.Size = new System.Drawing.Size(81, 28);
             this.btnImport.TabIndex = 3;
             this.btnImport.Text = "导入实体";
             this.btnImport.UseVisualStyleBackColor = true;
             this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
             // 
-            // label1
-            // 
-            this.label1.Location = new System.Drawing.Point(33, 23);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(164, 196);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "字段 < 字段\r\n字段 < 当前时间(T)\r\n字段 < 数字\r\n字段 < bool\r\n字段 < 字符串\r\n\r\n\r\n示例：\r\n[product_pt,crej_cj" +
-    "]\r\n\r\ncj_cmteid,pt_cmteid\r\ncj_ddtame,T\r\ncj_mqty,12\r\nflag,false\r\nremark,\"hahahaha\"" +
-    "";
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(360, 197);
+            this.button1.Location = new System.Drawing.Point(197, 39);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(78, 28);
             this.button1.TabIndex = 1;
-            this.button1.Text = "生成代码";
+            this.button1.Text = "脚本>>代码";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -174,7 +165,7 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.splitContainer4);
-            this.splitContainer3.Size = new System.Drawing.Size(890, 487);
+            this.splitContainer3.Size = new System.Drawing.Size(890, 649);
             this.splitContainer3.SplitterDistance = 277;
             this.splitContainer3.TabIndex = 1;
             // 
@@ -183,7 +174,7 @@
             this.richTextStr.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextStr.Location = new System.Drawing.Point(0, 0);
             this.richTextStr.Name = "richTextStr";
-            this.richTextStr.Size = new System.Drawing.Size(277, 487);
+            this.richTextStr.Size = new System.Drawing.Size(277, 649);
             this.richTextStr.TabIndex = 0;
             this.richTextStr.Text = "[product_pt,stockc_skc]\n\ncj_cmteid,pt_cmteid\ncj_ddtame,T\ncj_mqty,12\nflag,false\nre" +
     "mark,\"hahahaha\"";
@@ -201,29 +192,34 @@
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.listView2);
-            this.splitContainer4.Size = new System.Drawing.Size(609, 487);
+            this.splitContainer4.Size = new System.Drawing.Size(609, 649);
             this.splitContainer4.SplitterDistance = 350;
             this.splitContainer4.TabIndex = 0;
             // 
             // listView1
             // 
             this.listView1.AllowDrop = true;
+            this.listView1.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.desName,
             this.desDest,
             this.srcName,
             this.srcDest});
+            this.listView1.ContextMenuStrip = this.contextMenuStrip1;
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.FullRowSelect = true;
+            this.listView1.GridLines = true;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1});
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(350, 487);
+            this.listView1.Size = new System.Drawing.Size(350, 649);
+            this.listView1.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.listView1_ItemDrag);
             this.listView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.listView1_DragDrop);
             this.listView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.listView1_DragEnter);
             this.listView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listView1_KeyDown);
@@ -250,25 +246,31 @@
             // 
             // listView2
             // 
+            this.listView2.AllowDrop = true;
+            this.listView2.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.listView2.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.field,
             this.dest});
             this.listView2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView2.FullRowSelect = true;
+            this.listView2.GridLines = true;
             this.listView2.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem2});
             this.listView2.Location = new System.Drawing.Point(0, 0);
             this.listView2.MultiSelect = false;
             this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(255, 487);
+            this.listView2.Size = new System.Drawing.Size(255, 649);
+            this.listView2.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listView2.TabIndex = 1;
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.View = System.Windows.Forms.View.Details;
             this.listView2.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.listView2_ItemDrag);
+            this.listView2.DragDrop += new System.Windows.Forms.DragEventHandler(this.listView2_DragDrop);
+            this.listView2.DragEnter += new System.Windows.Forms.DragEventHandler(this.listView2_DragEnter);
             // 
             // field
             // 
-            this.field.Text = "字段";
+            this.field.Text = "源字段";
             this.field.Width = 130;
             // 
             // dest
@@ -285,15 +287,27 @@
             this.richTextCode.TabIndex = 11;
             this.richTextCode.Text = "";
             // 
-            // button2
+            // contextMenuStrip1
             // 
-            this.button2.Location = new System.Drawing.Point(276, 197);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(78, 28);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "生成脚本";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button1_Click);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.生成脚本ToolStripMenuItem,
+            this.生成代码ToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(125, 48);
+            // 
+            // 生成脚本ToolStripMenuItem
+            // 
+            this.生成脚本ToolStripMenuItem.Name = "生成脚本ToolStripMenuItem";
+            this.生成脚本ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.生成脚本ToolStripMenuItem.Text = "生成脚本";
+            this.生成脚本ToolStripMenuItem.Click += new System.EventHandler(this.生成脚本ToolStripMenuItem_Click);
+            // 
+            // 生成代码ToolStripMenuItem
+            // 
+            this.生成代码ToolStripMenuItem.Name = "生成代码ToolStripMenuItem";
+            this.生成代码ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.生成代码ToolStripMenuItem.Text = "生成代码";
+            this.生成代码ToolStripMenuItem.Click += new System.EventHandler(this.生成代码ToolStripMenuItem_Click);
             // 
             // MapsterAuto
             // 
@@ -321,6 +335,7 @@
             this.splitContainer4.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
             this.splitContainer4.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -331,7 +346,6 @@
         private System.Windows.Forms.RichTextBox richTextCode;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnImport;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtModelPath;
@@ -345,7 +359,9 @@
         private System.Windows.Forms.ColumnHeader srcDest;
         private System.Windows.Forms.ColumnHeader field;
         private System.Windows.Forms.ColumnHeader dest;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem 生成脚本ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 生成代码ToolStripMenuItem;
     }
 }
 

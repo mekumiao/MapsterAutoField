@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="ConverCodeManger.cs" />
     <Compile Include="LevenshteinDistance.cs" />
+    <Compile Include="ListExpand.cs" />
     <Compile Include="MapsterAuto.cs">
       <SubType>Form</SubType>
     </Compile>
