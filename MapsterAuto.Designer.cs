@@ -29,16 +29,17 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem(new string[] {
             "name",
             "名称",
             "",
             ""}, -1);
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem(new string[] {
             "name",
             "名称"}, -1);
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtModelPath = new System.Windows.Forms.TextBox();
             this.btnImport = new System.Windows.Forms.Button();
@@ -51,13 +52,15 @@
             this.desDest = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.srcName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.srcDest = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.生成脚本ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.生成代码ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.listView2 = new System.Windows.Forms.ListView();
             this.field = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.dest = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.richTextCode = new System.Windows.Forms.RichTextBox();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.生成脚本ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.生成代码ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button2 = new System.Windows.Forms.Button();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -103,6 +106,8 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.button2);
+            this.splitContainer2.Panel1.Controls.Add(this.textBox1);
             this.splitContainer2.Panel1.Controls.Add(this.label2);
             this.splitContainer2.Panel1.Controls.Add(this.txtModelPath);
             this.splitContainer2.Panel1.Controls.Add(this.btnImport);
@@ -114,6 +119,14 @@
             this.splitContainer2.Size = new System.Drawing.Size(890, 723);
             this.splitContainer2.SplitterDistance = 70;
             this.splitContainer2.TabIndex = 2;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(635, 44);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(252, 21);
+            this.textBox1.TabIndex = 6;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // label2
             // 
@@ -128,6 +141,7 @@
             // 
             this.txtModelPath.Location = new System.Drawing.Point(84, 3);
             this.txtModelPath.Name = "txtModelPath";
+            this.txtModelPath.ReadOnly = true;
             this.txtModelPath.Size = new System.Drawing.Size(454, 21);
             this.txtModelPath.TabIndex = 4;
             this.txtModelPath.Text = "C:\\Users\\Administrator\\Desktop\\项目源码\\ZxSoftERP_SC\\ZxModel\\Model.Basic\\";
@@ -210,7 +224,7 @@
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
+            listViewItem5});
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
@@ -244,6 +258,28 @@
             this.srcDest.Text = "描述";
             this.srcDest.Width = 80;
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.生成脚本ToolStripMenuItem,
+            this.生成代码ToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(125, 48);
+            // 
+            // 生成脚本ToolStripMenuItem
+            // 
+            this.生成脚本ToolStripMenuItem.Name = "生成脚本ToolStripMenuItem";
+            this.生成脚本ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.生成脚本ToolStripMenuItem.Text = "生成脚本";
+            this.生成脚本ToolStripMenuItem.Click += new System.EventHandler(this.生成脚本ToolStripMenuItem_Click);
+            // 
+            // 生成代码ToolStripMenuItem
+            // 
+            this.生成代码ToolStripMenuItem.Name = "生成代码ToolStripMenuItem";
+            this.生成代码ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.生成代码ToolStripMenuItem.Text = "生成代码";
+            this.生成代码ToolStripMenuItem.Click += new System.EventHandler(this.生成代码ToolStripMenuItem_Click);
+            // 
             // listView2
             // 
             this.listView2.AllowDrop = true;
@@ -255,7 +291,7 @@
             this.listView2.FullRowSelect = true;
             this.listView2.GridLines = true;
             this.listView2.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem2});
+            listViewItem4});
             this.listView2.Location = new System.Drawing.Point(0, 0);
             this.listView2.MultiSelect = false;
             this.listView2.Name = "listView2";
@@ -287,27 +323,15 @@
             this.richTextCode.TabIndex = 11;
             this.richTextCode.Text = "";
             // 
-            // contextMenuStrip1
+            // button2
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.生成脚本ToolStripMenuItem,
-            this.生成代码ToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(125, 48);
-            // 
-            // 生成脚本ToolStripMenuItem
-            // 
-            this.生成脚本ToolStripMenuItem.Name = "生成脚本ToolStripMenuItem";
-            this.生成脚本ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.生成脚本ToolStripMenuItem.Text = "生成脚本";
-            this.生成脚本ToolStripMenuItem.Click += new System.EventHandler(this.生成脚本ToolStripMenuItem_Click);
-            // 
-            // 生成代码ToolStripMenuItem
-            // 
-            this.生成代码ToolStripMenuItem.Name = "生成代码ToolStripMenuItem";
-            this.生成代码ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.生成代码ToolStripMenuItem.Text = "生成代码";
-            this.生成代码ToolStripMenuItem.Click += new System.EventHandler(this.生成代码ToolStripMenuItem_Click);
+            this.button2.Location = new System.Drawing.Point(542, 3);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(36, 23);
+            this.button2.TabIndex = 7;
+            this.button2.Text = "...";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // MapsterAuto
             // 
@@ -362,6 +386,9 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem 生成脚本ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 生成代码ToolStripMenuItem;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
     }
 }
 

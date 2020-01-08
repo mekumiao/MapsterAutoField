@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -19,6 +20,8 @@ namespace MapsterAutoField
         {
             InitializeComponent();
             manger = new ConverCodeManger();
+            var dir = GetAppsetting("modelDir");
+            if (!string.IsNullOrWhiteSpace(dir)) this.txtModelPath.Text = dir;
         }
 
         /// <summary>
@@ -105,30 +108,47 @@ namespace MapsterAutoField
                 if (e.Data.GetDataPresent(typeof(ListView.SelectedListViewItemCollection).ToString(), false))
                 {
                     var listview = (ListView)sender;
-                    var lstViewColl = (ListView.SelectedListViewItemCollection)e.Data.GetData(typeof(ListView.SelectedListViewItemCollection));
-                    if (lstViewColl.Count <= 0 || lstViewColl[0].ListView.Name == "listView1") return;
                     var cp = listView1.PointToClient(new Point(e.X, e.Y));
                     var listItem = listView1.GetItemAt(cp.X, cp.Y);
                     if (listItem == null) return;
 
+                    var lstViewColl = (ListView.SelectedListViewItemCollection)e.Data.GetData(typeof(ListView.SelectedListViewItemCollection));
+                    if (lstViewColl.Count <= 0) return;
+
                     var subitem = new ListViewItem.ListViewSubItemCollection(listItem);
                     var item = lstViewColl[0];
-                    if (string.IsNullOrWhiteSpace(subitem[2].Text))
+
+                    if (lstViewColl[0].ListView.Name == "listView2")
                     {
-                        subitem[2].Text = item.SubItems[0].Text;
-                        subitem[3].Text = item.SubItems[1].Text;
-                        item.Remove();
+                        if (string.IsNullOrWhiteSpace(subitem[2].Text))
+                        {
+                            subitem[2].Text = item.SubItems[0].Text;
+                            subitem[3].Text = item.SubItems[1].Text;
+                            item.Remove();
+                        }
+                        else
+                        {
+                            var listitem = new ListViewItem();
+                            listitem.Text = subitem[2].Text;
+                            listitem.SubItems.Add(subitem[3].Text);
+
+                            listView2.Items.Add(listitem);
+                            subitem[2].Text = item.SubItems[0].Text;
+                            subitem[3].Text = item.SubItems[1].Text;
+                            item.Remove();
+                        }
                     }
                     else
                     {
-                        var listitem = new ListViewItem();
-                        listitem.Text = subitem[2].Text;
-                        listitem.SubItems.Add(subitem[3].Text);
-
-                        listView2.Items.Add(listitem);
-                        subitem[2].Text = item.SubItems[0].Text;
-                        subitem[3].Text = item.SubItems[1].Text;
-                        item.Remove();
+                        if (!string.IsNullOrWhiteSpace(item.SubItems[2].Text))
+                        {
+                            var str1 = subitem[2].Text;
+                            var str2 = subitem[3].Text;
+                            subitem[2].Text = item.SubItems[2].Text;
+                            subitem[3].Text = item.SubItems[3].Text;
+                            item.SubItems[2].Text = str1;
+                            item.SubItems[3].Text = str2;
+                        }
                     }
 
                 }
@@ -238,6 +258,54 @@ namespace MapsterAutoField
         private void listView1_ItemDrag(object sender, ItemDragEventArgs e)
         {
             listView1.DoDragDrop(listView1.SelectedItems, DragDropEffects.Move);
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            var search = this.textBox1.Text;
+            foreach (ListViewItem item in this.listView2.Items)
+            {
+                if (!string.IsNullOrWhiteSpace(search) && (item.Text.Contains(search) || item.SubItems[1].Text.Contains(search)))
+                {
+                    item.BackColor = SystemColors.GrayText;
+                }
+                else
+                {
+                    item.BackColor = SystemColors.ScrollBar;
+                }
+            }
+        }
+
+        #region "配置文件修改读取"
+        private string GetAppsetting(string key)
+        {
+            return ConfigurationManager.AppSettings[key];
+        }
+
+        private void SetAppsetting(string key, string value)
+        {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            if (!config.AppSettings.Settings.AllKeys.Contains(key))
+            {
+                config.AppSettings.Settings.Add(key, value);
+            }
+            else
+            {
+                config.AppSettings.Settings[key].Value = value;
+            }
+            config.Save(ConfigurationSaveMode.Modified);//保存到磁盘
+            ConfigurationManager.RefreshSection("appSettings");//刷新节点
+        }
+        #endregion
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var result = this.folderBrowserDialog1.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                this.txtModelPath.Text = this.folderBrowserDialog1.SelectedPath;
+                SetAppsetting("modelDir", this.txtModelPath.Text);
+            }
         }
     }
 }
