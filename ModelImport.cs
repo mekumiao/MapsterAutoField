@@ -80,7 +80,7 @@ namespace MapsterAutoField
         //提取字段
         List<string> LoadFields(string model)
         {
-            var match = Regex.Matches(model, @"public(\s+[\w<>\[\]]+){2}\s*{\s*get\s*;\s*set\s*;\s*}");
+            var match = Regex.Matches(model, @"public(\s+[\w<>\[\].]+){2}\s*{\s*get\s*;\s*set\s*;\s*}");
             var result = new List<string>();
             foreach (Match item in match)
             {

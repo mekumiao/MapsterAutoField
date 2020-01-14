@@ -11,8 +11,8 @@ namespace MapsterAutoField
     {
 
         public string SourceCode { get; set; }
-        protected const string temp1 = "\n\t\t\t\t.Map(dest => dest.{0}, src => src.{1})";
-        protected const string temp2 = "\n\t\t\t\t.Map(dest => dest.{0}, src => {1})";
+        protected const string temp1 = "\n\t\t\t\t.Map(dest => dest.{0}, src => src.{1})//{2}";
+        protected const string temp2 = "\n\t\t\t\t.Map(dest => dest.{0}, src => {1})//{2}";
         protected const string temp3 = "Config.ForType<{0}, {1}>()";
         protected const string temp4 = "\n\t\t\t\t.IgnoreNonMapped(true);";
 
@@ -39,13 +39,13 @@ namespace MapsterAutoField
                 switch (x.Type)
                 {
                     case 3://当前时间
-                        bulder.AppendFormat(temp2, x.Dest, "DateTime.Now");
+                        bulder.AppendFormat(temp2, x.Dest, "DateTime.Now", x.Desc);
                         break;
                     case 5://字段
-                        bulder.AppendFormat(temp1, x.Dest, x.Src);
+                        bulder.AppendFormat(temp1, x.Dest, x.Src, x.Desc);
                         break;
                     default://默认值、数字、bool
-                        bulder.AppendFormat(temp2, x.Dest, x.Src);
+                        bulder.AppendFormat(temp2, x.Dest, x.Src, x.Desc);
                         break;
                 }
             });
@@ -89,8 +89,10 @@ namespace MapsterAutoField
                         var fd = new FieldValue();
                         fd.Dest = item[0].Trim();
                         fd.Src = item[1].Trim();
+                        fd.Desc = string.Empty;
+                        if (item.Count == 3) fd.Desc = item[2].Trim();
 
-                        if (Regex.IsMatch(fd.Src, @"\d")) fd.Type = 1;
+                        if (Regex.IsMatch(fd.Src, @"^\d+([.]\d)*$")) fd.Type = 1;
                         else if (Regex.IsMatch(fd.Src, "^[\"]{1}.*[\"]$")) fd.Type = 2;
                         else if (nowtime == fd.Src) fd.Type = 3;
                         else if (Regex.IsMatch(fd.Src, "^true|false$")) fd.Type = 4;
@@ -104,9 +106,20 @@ namespace MapsterAutoField
 
         public class FieldValue
         {
+            /// <summary>
+            /// 目标字段
+            /// </summary>
             public string Dest { get; set; }
 
+            /// <summary>
+            /// 源字段
+            /// </summary>
             public string Src { get; set; }
+
+            /// <summary>
+            /// 描述
+            /// </summary>
+            public string Desc { get; set; }
 
             /// <summary>
             /// 源字段类型

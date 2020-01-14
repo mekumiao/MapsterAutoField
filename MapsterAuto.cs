@@ -193,6 +193,7 @@ namespace MapsterAutoField
 
         private string CreateScript()
         {
+            string desc;
             var names = listView1.Tag as string[];
             if (names == null || names.Length != 2) throw new Exception("请导入实体后，再自行操作");
             var builder = new StringBuilder();
@@ -200,7 +201,10 @@ namespace MapsterAutoField
             builder.AppendLine();
             foreach (ListViewItem item in listView1.Items)
             {
-                builder.AppendFormat("{0},{1}\n", item.Text, item.SubItems[2].Text);
+                desc = item.SubItems[1].Text;
+                if (string.IsNullOrWhiteSpace(desc))
+                    desc = item.SubItems[3].Text;
+                builder.AppendFormat("{0},{1},{2}\n", item.Text, item.SubItems[2].Text, desc);
             }
             return builder.ToString();
         }
@@ -305,6 +309,39 @@ namespace MapsterAutoField
             {
                 this.txtModelPath.Text = this.folderBrowserDialog1.SelectedPath;
                 SetAppsetting("modelDir", this.txtModelPath.Text);
+            }
+        }
+
+        /// <summary>
+        /// 自动匹配
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button3_Click(object sender, EventArgs e)
+        {
+            string str1, str2, msg1, msg2, dst1, dst2;
+
+            foreach (ListViewItem item1 in listView1.Items)
+            {
+                if (item1.Text == null || string.IsNullOrWhiteSpace(item1.Text.Trim())) continue;
+
+                foreach (ListViewItem item2 in listView2.Items)
+                {
+                    str1 = item1.Text.Trim();
+                    str2 = item2.Text.Trim();
+                    msg1 = str1.Substring(str1.IndexOf('_')).Trim();
+                    msg2 = str2.Substring(str2.IndexOf('_')).Trim();
+                    dst1 = item1.SubItems[1].Text.Trim();
+                    dst2 = item2.SubItems[1].Text.Trim();
+
+                    if (str1 == str2 || msg1 == msg2 || (dst1 == dst2 && !string.IsNullOrWhiteSpace(dst1)))
+                    {
+                        item1.SubItems[2].Text = item2.Text;
+                        item1.SubItems[3].Text = item2.SubItems[1].Text;
+                        item2.Remove();
+                    }
+
+                }
             }
         }
     }
