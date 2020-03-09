@@ -21,7 +21,9 @@ namespace MapsterAutoField
             InitializeComponent();
             manger = new ConverCodeManger();
             var dir = GetAppsetting("modelDir");
+            var map = GetAppsetting("modelMap");
             if (!string.IsNullOrWhiteSpace(dir)) this.txtModelPath.Text = dir;
+            if (!string.IsNullOrWhiteSpace(map)) this.richTextStr.Text = map;
         }
 
         /// <summary>
@@ -89,6 +91,7 @@ namespace MapsterAutoField
                         listView2.Items.Add(listitem);
                     });
                 }
+                SetAppsetting("modelMap", $"[{names[0]},{names[1]}]");
             }
             catch (Exception ex)
             {
@@ -269,7 +272,23 @@ namespace MapsterAutoField
             var search = this.textBox1.Text;
             foreach (ListViewItem item in this.listView2.Items)
             {
-                if (!string.IsNullOrWhiteSpace(search) && (item.Text.Contains(search) || item.SubItems[1].Text.Contains(search)))
+                if (!string.IsNullOrWhiteSpace(search) && ((item.Text.Contains(search) || item.SubItems[1].Text.Contains(search))))
+                {
+                    item.BackColor = SystemColors.GrayText;
+                }
+                else
+                {
+                    item.BackColor = SystemColors.ScrollBar;
+                }
+            }
+
+            foreach (ListViewItem item in this.listView1.Items)
+            {
+                if (!string.IsNullOrWhiteSpace(search) && (
+                    (item.Text.Contains(search) ||
+                    item.SubItems[1].Text.Contains(search)) ||
+                    item.SubItems[2].Text.Contains(search) ||
+                    item.SubItems[3].Text.Contains(search)))
                 {
                     item.BackColor = SystemColors.GrayText;
                 }
@@ -329,8 +348,10 @@ namespace MapsterAutoField
                 {
                     str1 = item1.Text.Trim();
                     str2 = item2.Text.Trim();
-                    msg1 = str1.Substring(str1.IndexOf('_')).Trim();
-                    msg2 = str2.Substring(str2.IndexOf('_')).Trim();
+                    var idx1 = str1.IndexOf('_');
+                    var idx2 = str2.IndexOf('_');
+                    msg1 = str1.Substring(idx1 < 0 ? 0 : idx1).Trim();
+                    msg2 = str2.Substring(idx2 < 0 ? 0 : idx2).Trim();
                     dst1 = item1.SubItems[1].Text.Trim();
                     dst2 = item2.SubItems[1].Text.Trim();
 
@@ -339,6 +360,7 @@ namespace MapsterAutoField
                         item1.SubItems[2].Text = item2.Text;
                         item1.SubItems[3].Text = item2.SubItems[1].Text;
                         item2.Remove();
+                        break;
                     }
 
                 }

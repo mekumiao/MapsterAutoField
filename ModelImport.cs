@@ -78,7 +78,7 @@ namespace MapsterAutoField
         }
 
         //提取字段
-        List<string> LoadFields(string model)
+        private List<string> LoadFields(string model)
         {
             var match = Regex.Matches(model, @"public(\s+[\w<>\[\].]+){2}\s*{\s*get\s*;\s*set\s*;\s*}");
             var result = new List<string>();
@@ -90,20 +90,32 @@ namespace MapsterAutoField
             return result;
         }
         //提取描述
-        List<string> LoadDest(string model)
+        private List<string> LoadDest(string model)
         {
-            var match = Regex.Matches(model, "Description\\(\"[\\w\u4E00-\u9FA5\\s\\(\\)]+\"\\)");
+            var match = Regex.Matches(model, "Description\\(\"[\\w\u4E00-\u9FA5\\s\\(\\)【】（）]+\"\\)");
             var result = new List<string>();
             foreach (Match item in match)
             {
-                var value = Regex.Match(item.Value, "(?<=Description\\(\")([\\w\u4E00-\u9FA5\\s\\(\\)]+)(?=\"\\))").Value;
+                var value = Regex.Match(item.Value, "(?<=Description\\(\")([\\w\u4E00-\u9FA5\\s\\(\\)【】（）]+)(?=\"\\))").Value;
                 result.Add(value.Trim());
             }
             return result;
         }
 
+        /// <summary>
+        /// 提取有描述的字段
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private List<FieldInfo> LoadFieldInfo(string model)
+        {
+            var match = Regex.Matches(model, "\\[Description\\(\"[\\w\u4E00-\u9FA5\\s\\(\\)【】]+\"\\)\\]");
+            var result = new List<FieldInfo>();
+            return result;
+        }
+
         //文件读取
-        string ReadFile(string path)
+        private string ReadFile(string path)
         {
             using (StreamReader reader = new StreamReader(path, Encoding.Default))
             {

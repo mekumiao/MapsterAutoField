@@ -63,7 +63,11 @@ namespace MapsterAutoField
             var title = this.SourceCode.Substring(0, index + 1).Trim();
             var match = Regex.Match(title, @"(?<=\[)(.*?)(?=\])");
             var result = match.Value.Split(',');
-            Array.ForEach(result, x => x = x.Trim());
+            if (result?.Length == 2)
+            {
+                result[0] = result[0].Trim();
+                result[1] = result[1].Trim();
+            }
             return result;
         }
 
