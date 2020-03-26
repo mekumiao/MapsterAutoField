@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MapsterAutoField.ModelImport;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -20,9 +21,11 @@ namespace MapsterAutoField
         {
             InitializeComponent();
             manger = new ConverCodeManger();
-            var dir = GetAppsetting("modelDir");
+            var dirreg = GetAppsetting("modelRegDir");
+            var dirdny = GetAppsetting("modelDnyDir");
             var map = GetAppsetting("modelMap");
-            if (!string.IsNullOrWhiteSpace(dir)) this.txtModelPath.Text = dir;
+            if (!string.IsNullOrWhiteSpace(dirreg)) this.txtModelPath.Text = dirreg;
+            if (!string.IsNullOrWhiteSpace(dirdny)) this.txtModelDnypath.Text = dirdny;
             if (!string.IsNullOrWhiteSpace(map)) this.richTextStr.Text = map;
         }
 
@@ -61,11 +64,23 @@ namespace MapsterAutoField
                 manger.SourceCode = this.richTextStr.Text;
                 var names = manger.GetModelNames();
                 if (names.Length != 2) throw new Exception("实体名称格式错误");
-
                 listView1.Tag = names;
-                var dir = this.txtModelPath.Text;
-                var mp = new ModelImport();
-                var field = mp.GetFields(dir, names[1], names[0]);
+
+                var dir = default(string);
+                var import = default(IModelImport);
+
+                if (this.radioButton1.Checked)
+                {
+                    dir = this.txtModelPath.Text;
+                    import = new RegModelImport();
+                }
+                else
+                {
+                    dir = this.txtModelDnypath.Text;
+                    import = new DnyModelImport();
+                }
+
+                var field = import.GetFields(dir, names[1], names[0]);
 
                 if (field.Item1.Count > 0)
                 {
@@ -321,15 +336,27 @@ namespace MapsterAutoField
         }
         #endregion
 
+        #region 选择文件及文件夹
         private void button2_Click(object sender, EventArgs e)
         {
             var result = this.folderBrowserDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
                 this.txtModelPath.Text = this.folderBrowserDialog1.SelectedPath;
-                SetAppsetting("modelDir", this.txtModelPath.Text);
+                SetAppsetting("modelRegDir", this.txtModelPath.Text);
             }
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var result = this.openFileDialog1.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                this.txtModelPath.Text = this.openFileDialog1.FileName;
+                SetAppsetting("modelDnyDir", this.txtModelPath.Text);
+            }
+        }
+        #endregion
 
         /// <summary>
         /// 自动匹配
@@ -366,5 +393,6 @@ namespace MapsterAutoField
                 }
             }
         }
+
     }
 }
