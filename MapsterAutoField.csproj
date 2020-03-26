@@ -56,7 +56,6 @@
     <Compile Include="ConverCodeManger.cs" />
     <Compile Include="ModelImport\DnyModelImport.cs" />
     <Compile Include="ModelImport\IModelImport.cs" />
-    <Compile Include="LevenshteinDistance.cs" />
     <Compile Include="ListExpand.cs" />
     <Compile Include="MapsterAuto.cs">
       <SubType>Form</SubType>
